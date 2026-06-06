@@ -1,0 +1,47 @@
+# MARS external-validation config — single target cohort.
+#
+# Model blocks are IDENTICAL to configs/train.yaml so this file is passed to
+# scripts/cross_cohort_eval.py as BOTH --source_config (rebuild the architecture)
+# and --target_config (define the external cohort). Do NOT edit the model blocks.
+#
+# EDIT ONLY the two paths under data.sources[0].
+
+encoder:
+  in_channels: 4
+  out_dim: 256
+  dropout: 0.3
+  pretrained_path: null
+
+decomposition:
+  feature_dim: 128
+  n_heads: 2
+  dropout: 0.2
+  token_dim: 64
+  n_sub_tokens: 4
+
+fusion:
+  token_dim: 64
+  n_heads: 2
+  n_layers: 2
+  dropout: 0.2
+
+classifier:
+  token_dim: 64
+  clinical_dim: 5
+  hidden_dim: 32
+  dropout: 0.5
+
+training:
+  batch_size: 12          # used only for the eval DataLoader
+  output_dir: outputs/external_validation
+
+data:
+  sources:
+    - name: external
+      data_dir: path/to/external/ALN_preprocess
+      clinical_xlsx: path/to/external/clinical_aligned.xlsx
+      sheet_name: 已完成
+      header: 1
+  volume_size: [32, 64, 64]
+  n_folds: 5              # unused at eval (full cohort scored, no split)
+  seed: 42

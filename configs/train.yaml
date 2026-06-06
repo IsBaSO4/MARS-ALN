@@ -1,0 +1,67 @@
+# MARS training config — joint multi-cohort 5-fold cross-validation.
+#
+# Edit the cohort paths under `data.sources`. Each aligned clinical xlsx must use
+# the canonical schema written by scripts/align_clinical.py (sheet 已完成, 2-row
+# header): ID.1 / HER2(1:positive;0:negative) / ER(数值) / PR(数值) /
+# HR(1:positive;0:negative) / Ki67(数值) / post-LN（1:positive；0:negative）.
+# A single cohort is fine too — just keep one entry under `sources`.
+
+encoder:
+  in_channels: 4          # 4 DCE pharmacokinetic channels
+  out_dim: 256
+  dropout: 0.3
+  pretrained_path: null
+
+decomposition:
+  feature_dim: 128        # ignored by code (uses encoder.out_dim=256)
+  n_heads: 2
+  dropout: 0.2
+  token_dim: 64
+  n_sub_tokens: 4
+
+fusion:
+  token_dim: 64
+  n_heads: 2
+  n_layers: 2
+  dropout: 0.2
+
+classifier:
+  token_dim: 64
+  clinical_dim: 5         # HER2, ER, PR, HR, Ki67
+  hidden_dim: 32
+  dropout: 0.5
+
+loss:
+  label_smoothing: 0.05
+  lambda_delta: 0.1
+  delta_margin: 0.2
+
+training:
+  epochs_phase1: 10
+  epochs_phase2: 80
+  lr_phase1: 1.0e-3
+  lr_phase2: 2.0e-4
+  weight_decay: 1.0e-3
+  warmup_epochs: 5
+  patience: 20
+  batch_size: 12
+  output_dir: outputs/mars_run
+
+data:
+  sources:
+    - name: cohort_A
+      data_dir: path/to/cohort_A/ALN_preprocess
+      clinical_xlsx: path/to/cohort_A/clinical_aligned.xlsx
+    - name: cohort_B
+      data_dir: path/to/cohort_B/ALN_preprocess
+      clinical_xlsx: path/to/cohort_B/clinical_aligned.xlsx
+  volume_size: [32, 64, 64]
+  n_folds: 5
+  seed: 42
+
+augmentation:
+  rotation_range: 10.0
+  scale_range: [0.9, 1.1]
+  intensity_shift: 0.1
+  noise_std: 0.02
+  flip_prob: 0.5

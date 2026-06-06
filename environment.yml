@@ -1,0 +1,23 @@
+# Conda environment for MARS:
+#   conda env create -f environment.yml && conda activate mars-aln
+# Adjust `pytorch-cuda` to your CUDA driver, or drop it for a CPU-only install.
+name: mars-aln
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pip
+  - numpy>=1.21,<2.0
+  - pandas>=1.3
+  - scikit-learn>=1.0
+  - scipy>=1.7
+  - pyyaml>=5.4
+  - openpyxl>=3.0
+  - pytorch>=2.0
+  - pytorch-cuda=11.8      # <- match your CUDA; remove for CPU-only
+  - pip:
+      - nibabel>=4.0
+      # - SimpleITK>=2.2    # optional, only for N4 bias-field correction
