@@ -11,19 +11,8 @@ decomposes the features into *cross-region shared*, *longitudinal
 treatment-response*, and *region-specific* tokens via cross-attention, fuses them
 with self-attention, and predicts ALN pCR together with biopsy clinical features.
 
-```
-4 ROIs (breast/ALN × pre/post-NAT DCE)
-        │  shared 3D ResNet-50 encoder
-        ▼
-   cross-attention decomposition  →  6 tokens
-   [shared_T0, shared_T1, delta_B, delta_A, residual_B, residual_A]
-        │  self-attention fusion + attention pooling
-        ▼
-   MLP classifier (+ clinical features)  →  ALN pCR probability
-```
 
-Patient imaging/clinical data and trained weights are not included; the formats
-below make the pipeline reproducible on your own data.
+Patient imaging/clinical data are not included; trained weights can be downloaded from https://drive.google.com/drive/folders/1_cZoTh8bS6MeqahbDicK8CcHGlu-5T6m?usp=sharing.
 
 ## Installation
 
