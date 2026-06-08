@@ -48,11 +48,6 @@ delayed_enh]`. The contract is exposed in `src/data/dataset_interface.py`:
 python -m src.data.dataset_interface <data_dir> <clinical_aligned.xlsx>
 ```
 
-### Clinical schema (produced by `align_clinical.py`)
-`ID.1`, `HER2(1:positive;0:negative)`, `ER(数值)`, `PR(数值)`,
-`HR(1:positive;0:negative)`, `Ki67(数值)`, `post-LN（1:positive；0:negative）`.
-Label = **ALN pCR = 1 − post-LN**; the 5 clinical features `[HER2, ER, PR, HR,
-Ki67]` are z-scored per cohort at load time.
 
 ## Usage
 
